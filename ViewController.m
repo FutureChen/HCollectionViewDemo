@@ -58,11 +58,22 @@
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 3;
+    return 4;
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if (section==0) {
+        return 4;
+    }
+    else if (section==1)
+    {
+        return 3;
+    }
+    else if (section==2)
+        return 0;
+    else if (section==3)
+        return 5;
     return 4;
 }
 

@@ -34,7 +34,7 @@
 }
 //3  返回目标区域对应的Attributes 数组
 - (nullable NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
-    NSLog(@"___________%@",NSStringFromCGRect(rect));
+//    NSLog(@"___________%@",NSStringFromCGRect(rect));
     //获取对应rect中的展示indexpath ，生成attribu，笔者这里的需求不会存在大量数据，就偷懒了。
     NSMutableArray *attributeArray = [NSMutableArray new];
 
@@ -88,16 +88,19 @@
 -(CGFloat)sectionWidth:(NSUInteger)section
 {
    NSInteger column=  [self numColumnOfSection:section];
-   CGFloat re=self.sectionInset.left+self.sectionInset.right+column*(self.itemSize.width+self.minimumLineSpacing);
+    CGFloat re=self.sectionInset.left+self.sectionInset.right+column*(self.itemSize.width+self.minimumLineSpacing);
+    if (self.headerReferenceSize.width>re) {
+        re=self.headerReferenceSize.width+self.sectionInset.left+self.sectionInset.right;
+    }
     return re;
 }
-//根据视图的高度，计算section的 行列数
+//根据视图的高度，计算section中Itme 行列数
 -(NSInteger)numColumnOfSection:(NSUInteger)section
 {
     NSInteger numOfItmes=[self.collectionView numberOfItemsInSection:section];
     CGFloat viewHeight=self.collectionView.frame.size.height;
     NSInteger line=  viewHeight/self.itemSize.height;
-    CGFloat fcolumn=numOfItmes/line;
+    CGFloat fcolumn=(CGFloat)numOfItmes/line;
     NSInteger  column= ceil(fcolumn);
     return column;
 }
@@ -105,7 +108,7 @@
 {
     CGFloat x=self.sectionInset.left;//计算每个head.x
     for (NSInteger i=1;i<=section ;i++) {
-        x+=  [self sectionWidth:i];
+        x+=  [self sectionWidth:i-1];
     }
     return x;
 }
